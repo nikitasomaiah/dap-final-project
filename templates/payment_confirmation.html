@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <title>Payment Confirmation</title>
+    <style>
+        #paymentConfirmation {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="paymentConfirmation">
+        <p>Payment confirmation ongoing. <span class="movingText"></span></p>
+    </div>
+
+    <script>
+        var typed = new Typed(".movingText", {
+            strings: ["Redirecting to confirmation page..."],
+            typeSpeed: 100,
+            backSpeed: 100,
+            backDelay: 1000,
+            loop: false
+        });
+
+        setTimeout(function() {
+            window.location.href = '/confirmation';
+        }, 6500);
+    </script>
+</body>
+</html>

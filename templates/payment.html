@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paytm Payment</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        body 
+        {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background-color: #1e1f26
+            }
+        .payment-wrapper {
+            width: 400px;
+            background:white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .payment-wrapper h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .input-box {
+            margin-bottom: 20px;
+        }
+        .input-box label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .input-box input:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #007BFF;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .secure {
+            text-align: center;
+            margin-top: 15px;
+            color: #555;
+            font-size: 14px;
+        }
+        .secure i {
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-wrapper">
+        <h2>Payment</h2>
+        <h3 style="margin-bottom:15px;">Please Pay: &#8377;{{total_amount}}</h3>
+        <h4 style="margin-bottom:15px;";>Movie-Name: {{movie_name}}</h3>
+        <form id="payment-form" action="/payment" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="input-box">
+                <label for="cardholder_name">Cardholder Name</label>
+                <input type="text" id="cardholder_name" name="cardholder_name" placeholder="John" required>
+                <span class="error" id="cardholder_name_error"></span>
+            </div>
+            <div class="input-box">
+                <label for="card_number">Card Number</label>
+                <input type="text" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" required pattern="\d{4} \d{4} \d{4} \d{4}">
+                <span class="error" id="card_number_error"></span>
+            </div>
+            <div class="input-box">
+                <label for="expiry_date">Expiry Date</label>
+                <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/YY" required pattern="\d{2}/\d{2}">
+                <span class="error" id="expiry_date_error"></span>
+            </div>
+            <div class="input-box">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="123" required pattern="\d{3}">
+                <span class="error" id="cvv_error"></span>
+            </div>
+           
+            <button type="submit" class="btn">Pay Now</button>
+            <div class="secure">
+                <i class='bx bxs-lock'></i> Your payment is secure
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="validationModal" tabindex="-1" role="dialog" aria-labelledby="validationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="validationModalLabel">Validation Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="validationMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+        <script>
+            document.getElementById('payment-form').addEventListener('submit', function(event) {
+                let valid = true;
+    
+                // Clear previous error messages
+                document.querySelectorAll('.error').forEach(function(element) {
+                    element.textContent = '';
+                });
+    
+                // Validate Cardholder Name
+                const cardholderName = document.getElementById('cardholder_name');
+                if (cardholderName.value.trim() === '') {
+                    document.getElementById('cardholder_name_error').textContent = 'Cardholder name is required';
+                    valid = false;
+                }
+    
+                // Validate Card Number
+                const cardNumber = document.getElementById('card_number');
+                const cardNumberPattern = /^\d{4} \d{4} \d{4} \d{4}$/;
+                if (!cardNumberPattern.test(cardNumber.value)) {
+                    document.getElementById('card_number_error').textContent = 'Card number must be in the format 1234 5678 9012 3456';
+                    valid = false;
+                }
+    
+                // Validate Expiry Date
+                const expiryDate = document.getElementById('expiry_date');
+                const expiryDatePattern = /^\d{2}\/\d{2}$/;
+                if (!expiryDatePattern.test(expiryDate.value)) {
+                    document.getElementById('expiry_date_error').textContent = 'Expiry date must be in the format MM/YY';
+                    valid = false;
+                }
+    
+                // Validate CVV
+                const cvv = document.getElementById('cvv');
+                const cvvPattern = /^\d{3}$/;
+                if (!cvvPattern.test(cvv.value)) {
+                    document.getElementById('cvv_error').textContent = 'CVV must be a 3-digit number';
+                    valid = false;
+                }
+    
+                // If any field is invalid, prevent form submission
+                if (!valid) {
+                    event.preventDefault();
+                    $('#validationMessage').text('Please correct the validation errors.');
+                    $('#validationModal').modal('show');
+                }
+                
+            });
+        </script>
+</body>
+</html>

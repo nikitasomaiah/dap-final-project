@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Movie booking</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Joan&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+
+            box-sizing: border-box;
+            font-family: 'Joan', serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: #adadad;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: .5rem 1rem;
+            background-color: #cda33f;
+            border-radius: 2rem;
+            color: #1e1f26;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            background-color: #92601f;
+        }
+
+        .btn-l {
+            width: 100%;
+            text-align: center;
+        }
+
+        body {
+            background-color: #1e1f26;
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: space-evenly;
+        }
+
+        /* top bar */
+
+        .top-bar {
+            width: 100%;
+        }
+
+        .left-content, .right-content {
+            display: flex;
+            margin-left: 1rem; /* Adjusted margin-left */
+        }
+
+        .title {
+            margin-right: 3rem;
+            color: #cd8c38;
+        }
+
+        .navigation {
+            display: flex;
+            list-style: none;
+        }
+
+        .navigation li {
+            margin-right: 1rem;
+        }
+
+        .navigation li a:hover {
+            color: #cd8c38;
+        }
+
+        .active {
+            color: #cd8c38;
+        }
+
+        .filter,
+        .cart,
+        .help,
+        .menu {
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+
+        .filter,
+        .cart,
+        .help {
+            margin-right: 1rem;
+        }
+
+        .menu {
+            margin-left: .8rem;
+        }
+
+        .filter,
+        .menu {
+            display: none;
+        }
+
+        .profile-img-box {
+            position: relative;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        img {
+            position: absolute;
+            top: auto;
+            left: 0%;
+            width: 97%;
+            height: 98%;
+            object-fit: cover;
+        }
+        /* main container */
+
+        .main-container {
+            color: #adadad;
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+
+        /* movies container */
+
+        .upcoming-img-box {
+            position: relative;
+            height: 500px;
+            width: 100%;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .upcoming-title {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #fcfffe;
+            background-color: #1e1f26;
+            padding: .5rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid #cd8c38;
+            font-weight: 500;
+        }
+
+        .buttons {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+        }
+
+        .btn-alt {
+            background-color: #1e1f26;
+            color: #cd8c38;
+            border: 1px solid #cd8c38;
+            margin-left: 1rem;
+        }
+
+        .btn-alt:hover {
+            color: #1e1f26;
+            background-color: #cd8c38;
+        }
+
+        /* current movies */
+
+        .movies-container {
+            padding-bottom: 2rem;
+        }
+
+        .current-movies {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2.5rem;
+        }
+
+        .current-movie {
+            background: linear-gradient(45deg, rgba(255, 255, 255, .05), rgba(205, 140, 56, .15));
+            padding: 10px;
+            height: 108%;
+        }
+
+        .cm-img-box {
+            position: relative;
+            height: 150px;
+            width: 250px; /* Adjusted width here */
+            margin-bottom: 1rem;
+            border-radius: .5rem;
+            overflow: hidden;
+            background-size: contain;
+        }
+
+        .movie-title {
+            color: #fff;
+            margin-bottom: .2rem;
+        }
+
+        .booking {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .price {
+            color: #cd8c38;
+        }
+        .footer{
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: #fff;
+          }
+      
+          .navigation {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+          }
+      
+          .navigation li {
+            margin-right: 10px;
+          }
+      
+          .navigation li:last-child {
+            margin-right: 0;
+          }
+      
+          .button-shape {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-left: auto; /* Aligns the button to the right */
+            border-radius: 5px; /* Applies border-radius for button shape */
+          }
+      
+          .button-shape:hover {
+            background-color: #45a049;
+            cursor: pointer;
+          }
+    </style>
+</head>
+
+<body>
+    <section class="top-bar">
+        <div class="left-content">
+            <h2 class="title">Shows</h2>
+            <ul class="navigation">
+                <li><a href="#">Home</a></li>
+                <li><a class="active" href="#">Movies</a></li>
+            </ul>
+        </div>
+        <a href="{{ url_for('login_form') }}" class="button-shape">Log-Out</a>
+    </section>
+    <section class="main-container">
+
+        <div class="movies-container">
+            <div class="upcoming-img-box">
+                <img src="{{ url_for('static', filename='images/Kalki.webp') }}" alt="">
+                <p class="upcoming-title">Upcoming Movie</p>
+                <div class="buttons">
+                    <a href="#" class="btn">Book Now</a>
+                    <a href="#" class="btn-alt btn">Play Trailer</a>
+                </div>
+            </div>
+            <div class="current-movies">
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Yodha.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Yodha</h3>
+                    <p class="screen-name">Screen : Platinum</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Yodha">
+                        <input type="hidden" name="price" value="200">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Maidaan.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Maidaan</h3>
+                    <p class="screen-name">Screen : Gold</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Maidaan">
+                        <input type="hidden" name="price" value="150">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/YUVA.jpeg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">YUVA</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="YUVA">
+                        <input type="hidden" name="price" value="250">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Avesham.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Avesham</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Avesham">
+                        <input type="hidden" name="price" value="250">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Manjummel boys.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Manjummel Boys</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Manjummel Boys">
+                        <input type="hidden" name="price" value="150">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/The Goatlife.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Goat Life</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Goat Life">
+                        <input type="hidden" name="price" value="300">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Shaitaan.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Shaitaan</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Shaitaan">
+                        <input type="hidden" name="price" value="150">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Eagle.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Eagle</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Eagle">
+                        <input type="hidden" name="price" value="100">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Fighter.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Fighter</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Fighter">
+                        <input type="hidden" name="price" value="300">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+                <div class="current-movie">
+                    <div class="cm-img-box">
+                        <img src="{{ url_for('static', filename='images/Bhimaa.jpg') }}" alt="">
+                    </div>
+                    <h3 class="movie-title">Bhimaa</h3>
+                    <p class="screen-name">Screen : Silver</p>
+                    <form action="/book_ticket" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="movie_name" value="Bhima">
+                        <input type="hidden" name="price" value="180">
+                        <button type="submit" class="btn">Buy Tickets</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</body>
+<hr>
+<footer>
+    <div class="footer">
+    <h4 style="color:Yellow;font-weight:bold;text-align:center">&#169 All rights reserved to this company.</h4>
+    </div>
+</footer>
+</html>

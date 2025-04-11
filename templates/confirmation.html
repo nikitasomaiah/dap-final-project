@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+25+Charted&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Roboto:ital,wght@0,300;0,400;0,700;0,900;1,100;1,400;1,700&family=Sen:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Jersey+25+Charted&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,300;0,400;0,700;0,900;1,100;1,400;1,700&family=Sen:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-image: url("{{ url_for('static', filename='images/seat-background.png') }}");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .jumbotron {
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            background-color: #fff;
+            border-radius: .3rem;
+            margin-left:3%;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .jumbotron h1 {
+            max-width: 679px;
+            font-size: 46px;
+            box-shadow: 0 0 10px rgba(255, 0, 150, 0.5);
+            text-align: center;
+            font-family: 'Jersey 25 Charted', sans-serif;
+        }
+
+        .container {
+            max-width: 750px;
+            margin-left: 25%;
+        }
+
+        .confirmation {
+            margin-top: 60px;
+            text-align: center;
+            padding: 50px;
+            border-radius: 20%;
+            position: relative;
+            overflow: hidden;
+            animation: neonBorder 2s linear infinite alternate;
+        }
+
+        .confirmation::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 0, 150, 0.5);
+        }
+
+        .confirmation p {
+            margin: 10px 0;
+            font-size: 30px;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .confirmation ul {
+            padding-left: 20px;
+            font-size: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        @keyframes neonBorder {
+            0% {
+                box-shadow: 0 0 20px rgba(255, 0, 150, 1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 0, 150, 2);
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(255, 0, 150, 5);
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            font-family: 'Kanit', sans-serif;
+            font-size: 14px;
+            text-decoration: none;
+            margin-top: 30px;
+            margin-left:35%;
+        }
+
+        .btn:hover {
+            background-color:red;
+        }
+
+        .btn:not(:disabled):not(.disabled) {
+            cursor: pointer;
+        }
+
+        .btn-icon {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="confirmationMessage" style="display:none;">
+        <p>Payment is done. Redirecting to confirmation page...</p>
+    </div>
+
+    <div class="container">
+        <div class="jumbotron text-center" >
+            <h1>Thank You '{{name}}' for Choosing Us!</h1>
+        </div>
+        <div class="confirmation">
+            <p>Movie Name: {{ movie_names }}</p>
+            <p>Email: {{ email }}</p>
+            <p>Total Amount Paid:  &#8377;{{ total_amount }}</p>
+            <p>Seats: {{ seats|join(', ') }}</p>
+        </div>
+        <a href="{{ url_for('main_page') }}" class="btn">
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM7.354 11.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0 0-.708l3-3a.5.5 0 0 0-.708-.708L3.293 7.293a1 1 0 0 0 0 1.414l3.353 3.353a.5.5 0 0 0 .708 0Z"/>
+                <path fill-rule="evenodd" d="M10.5 8a.5.5 0 0 1-.5.5H1.707l2.647 2.646a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 1 1 .708.708L1.707 7.5H10a.5.5 0 0 1 .5.5Z"/>
+            </svg>
+            Back to Main Page
+        </a>
+    </div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('confirmationMessage').style.display = 'block';
+            setTimeout(function() {
+                window.location.href = '/confirmation';
+            }, 5000);
+        }, 5000);
+        alert("Please take a screen shot of this ticket(including seat numbers)");
+    </script>
+</body>
+</html>
