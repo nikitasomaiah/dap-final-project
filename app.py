@@ -7,7 +7,7 @@ import re
 from flask_bcrypt  import bcrypt
 import logging
 import re
-error=error
+
 MIN_NAME_LENGTH = 10
 # Password policy requirements
 MIN_PASSWORD_LENGTH = 8
@@ -235,7 +235,7 @@ def admin_page():
     movie_bookings = cursor.fetchall()
     conn.close()
     return render_template('admin.html', movie_bookings=movie_bookings)
-
+error
 
 @app.route('/main')
 def main():
