@@ -8,8 +8,6 @@ from flask_bcrypt  import bcrypt
 import logging
 import re
 
-error = error 
-
 # Password policy requirements
 MIN_PASSWORD_LENGTH = 8
 REQUIRE_UPPERCASE = True
