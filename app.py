@@ -235,7 +235,6 @@ def admin_page():
     movie_bookings = cursor.fetchall()
     conn.close()
     return render_template('admin.html', movie_bookings=movie_bookings)
-error
 
 @app.route('/main')
 def main():
