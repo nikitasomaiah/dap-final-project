@@ -1,12 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, g, jsonify
-from flask_wtf.csrf import CSRFProtect
-import sqlite3
-import secrets
-import time
-import re
-from flask_bcrypt  import bcrypt
 import logging
 import re
+import secrets
+import sqlite3
+
+from flask import Flask, render_template, request, redirect, url_for, flash, g
+from flask_wtf.csrf import CSRFProtect
+from flask_bcrypt import bcrypt
+
 
 MIN_NAME_LENGTH = 10
 # Password policy requirements
@@ -15,7 +15,7 @@ REQUIRE_UPPERCASE = True
 REQUIRE_LOWERCASE = True
 REQUIRE_DIGITS = True
 REQUIRE_SPECIAL_CHARS = True
-SPECIAL_CHARS_REGEX = r'[!@#$%^&*()-=_+`~[\]{}|;:,.<>?]'
+SPECIAL_CHARS_REGEX = r'[!@#$%^&*()_+\-=\[\]{};:\'",.<>/?\\|`~]'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
@@ -83,9 +83,7 @@ def admin_login():
     if request.method == 'POST':
         admin_user = request.form['username']
         admin_pass = request.form['password']
-        
         admin_credentials = {'Admin': 'Password##'}
-        
         if admin_user in admin_credentials and admin_pass == admin_credentials[admin_user]:
             return redirect(url_for('admin_page'))
         else:
@@ -118,11 +116,9 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             flash('Invalid email address.', 'error')
             return redirect(url_for('register'))
-        
         if not (username and email and password and confirm_password):
             flash('All fields are required.', 'error')
             return redirect(url_for('register'))
@@ -367,4 +363,5 @@ def main_page():
 if __name__ == '__main__':
     with app.app_context():
         init_db()
-    app.run(port=9025)
+    app.run(host='0.0.0.0', port=9025)
+
